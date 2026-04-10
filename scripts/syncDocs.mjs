@@ -74,6 +74,11 @@ async function main() {
 
     console.log(`[${source.id}] ${diff.type === 'new' ? 'NEW (first-time snapshot)' : 'CHANGED'} — calling GitHub Models...`)
 
+    // Throttle: wait 5s between AI calls to stay within the 24 req/min rate limit
+    if (changedSources.length > 0 || errors.some(e => e.stage === 'ai')) {
+      await new Promise(r => setTimeout(r, 5000))
+    }
+
     let proposal
     try {
       proposal = await callGitHubModel(source, diff, githubToken)

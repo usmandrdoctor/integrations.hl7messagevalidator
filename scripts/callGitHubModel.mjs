@@ -104,7 +104,7 @@ ${diff.type === 'new'
 Respond with ONLY the JSON object.`
 
   let lastError
-  for (let attempt = 1; attempt <= 2; attempt++) {
+  for (let attempt = 1; attempt <= 5; attempt++) {
     try {
       const res = await fetch(GITHUB_MODELS_URL, {
         method: 'POST',
@@ -123,6 +123,16 @@ Respond with ONLY the JSON object.`
           max_tokens: 4096,
         }),
       })
+
+      if (res.status === 429) {
+        const body = await res.text()
+        // Parse wait time from error message e.g. "Please wait 4 seconds before retrying"
+        const waitMatch = body.match(/wait (\d+) seconds?/i)
+        const waitSecs = waitMatch ? parseInt(waitMatch[1], 10) + 2 : 15
+        console.warn(`  Rate limited — waiting ${waitSecs}s before retry (attempt ${attempt}/5)...`)
+        await new Promise(r => setTimeout(r, waitSecs * 1000))
+        continue
+      }
 
       if (!res.ok) {
         const body = await res.text()
@@ -147,12 +157,12 @@ Respond with ONLY the JSON object.`
       return proposal
     } catch (err) {
       lastError = err
-      if (attempt < 2) {
+      if (attempt < 5) {
         console.warn(`[${source.id}] GitHub Models attempt ${attempt} failed: ${err.message} — retrying...`)
-        await new Promise(r => setTimeout(r, 3000))
+        await new Promise(r => setTimeout(r, 5000))
       }
     }
   }
 
-  throw new Error(`[${source.id}] GitHub Models call failed after 2 attempts: ${lastError.message}`)
+  throw new Error(`[${source.id}] GitHub Models call failed after 5 attempts: ${lastError.message}`)
 }
