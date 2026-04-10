@@ -1,0 +1,68 @@
+/* ── Commercial fonts (PolySans Standard & RM Neue) ──────────────────────── */
+/* Kalam is loaded via <link> in index.html */
+/*
+  Place the font files in /public/fonts/ and they will be picked up automatically.
+  Obtain the fonts from:
+    PolySans Standard  →  https://wearenormal.com/products/polysans
+    RM Neue            →  Revolver Type Foundry
+*/
+@font-face {
+  font-family: 'PolySans Standard';
+  src: url('/fonts/PolySans-Standard.woff2') format('woff2'),
+       url('/fonts/PolySans-Standard.woff')  format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PolySans Standard';
+  src: url('/fonts/PolySans-StandardItalic.woff2') format('woff2'),
+       url('/fonts/PolySans-StandardItalic.woff')  format('woff');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'RM Neue';
+  src: url('/fonts/RMNeue-Regular.woff2') format('woff2'),
+       url('/fonts/RMNeue-Regular.woff')  format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'RM Neue';
+  src: url('/fonts/RMNeue-Medium.woff2') format('woff2'),
+       url('/fonts/RMNeue-Medium.woff')  format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'RM Neue';
+  src: url('/fonts/RMNeue-Bold.woff2') format('woff2'),
+       url('/fonts/RMNeue-Bold.woff')  format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── Tailwind ─────────────────────────────────────────────────────────────── */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Base styles ──────────────────────────────────────────────────────────── */
+@layer base {
+  body {
+    @apply antialiased font-body bg-brand-cream text-gray-800;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
