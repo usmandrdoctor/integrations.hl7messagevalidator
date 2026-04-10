@@ -1,0 +1,54 @@
+name: Sync HL7 Documentation
+
+on:
+  schedule:
+    # Runs on the 1st of every month at 06:00 UTC
+    - cron: '0 6 1 * *'
+  workflow_dispatch:
+    # Allow manual trigger from the Actions tab for testing
+
+permissions:
+  contents: write       # Push the sync branch
+  pull-requests: write  # Open the PR
+  models: read          # GitHub Models (GPT-4o) inference
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # SYNC_PAT needed so the pushed branch can trigger PR checks.
+          # The default GITHUB_TOKEN cannot trigger other workflow runs on a pushed branch.
+          token: ${{ secrets.SYNC_PAT }}
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install script dependencies
+        working-directory: scripts
+        run: npm install
+
+      - name: Configure git identity
+        run: |
+          git config user.name "docs-sync-bot"
+          git config user.email "docs-sync-bot@users.noreply.github.com"
+
+      - name: Run documentation sync
+        env:
+          # Built-in Actions token — used for GitHub Models AI calls (no extra secret needed)
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Fine-grained PAT for pushing branches and creating PRs
+          GH_TOKEN: ${{ secrets.SYNC_PAT }}
+          # Optional: bearer token if any doc pages require authentication
+          DOCS_AUTH_TOKEN: ${{ secrets.DOCS_AUTH_TOKEN }}
+        run: node scripts/syncDocs.mjs
+
+      - name: Report result
+        if: success()
+        run: echo "Docs sync completed successfully."

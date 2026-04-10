@@ -1,0 +1,246 @@
+{
+  "sources": [
+    {
+      "id": "segment-msh",
+      "type": "segment",
+      "url": "https://docs.dr.doctor/en/articles/83332-segment-msh",
+      "description": "MSH segment — message header rules",
+      "affects": {
+        "ruleFiles": ["src/validation/rules/msh.ts"],
+        "referenceDataKeys": ["VALID_PROCESSING_IDS"],
+        "messageTypeConfigs": []
+      }
+    },
+    {
+      "id": "segment-evn",
+      "type": "segment",
+      "url": "https://docs.dr.doctor/en/articles/83333-segment-evn",
+      "description": "EVN segment — event type and date rules",
+      "affects": {
+        "ruleFiles": ["src/validation/rules/evn.ts"],
+        "referenceDataKeys": [],
+        "messageTypeConfigs": []
+      }
+    },
+    {
+      "id": "segment-pid",
+      "type": "segment",
+      "url": "https://docs.dr.doctor/en/articles/83334-segment-pid",
+      "description": "PID segment — patient identity rules",
+      "affects": {
+        "ruleFiles": ["src/validation/rules/pid.ts", "src/validation/rules/pidOru.ts"],
+        "referenceDataKeys": ["VALID_SEX_CODES", "SEX_CODE_LABELS", "VALID_IDENTIFIER_TYPES", "REQUIRED_ADDRESS_TYPE"],
+        "messageTypeConfigs": []
+      }
+    },
+    {
+      "id": "segment-pv1",
+      "type": "segment",
+      "url": "https://docs.dr.doctor/en/articles/83336-segment-pv1",
+      "description": "PV1 segment — patient visit rules",
+      "affects": {
+        "ruleFiles": ["src/validation/rules/pv1.ts", "src/validation/rules/pv1Siu.ts"],
+        "referenceDataKeys": ["EXPECTED_PATIENT_CLASS"],
+        "messageTypeConfigs": []
+      }
+    },
+    {
+      "id": "segment-pv2",
+      "type": "segment",
+      "url": "https://docs.dr.doctor/en/articles/83337-segment-pv2",
+      "description": "PV2 segment — additional patient visit rules",
+      "affects": {
+        "ruleFiles": ["src/validation/rules/pv2.ts"],
+        "referenceDataKeys": ["VALID_PRIORITY_CODES", "PRIORITY_CODE_LABELS"],
+        "messageTypeConfigs": []
+      }
+    },
+    {
+      "id": "segment-zu1",
+      "type": "segment",
+      "url": "https://docs.dr.doctor/en/articles/83338-segment-zu1",
+      "description": "ZU1 custom segment — translation and referral source",
+      "affects": {
+        "ruleFiles": ["src/validation/rules/zu1.ts"],
+        "referenceDataKeys": ["VALID_YN"],
+        "messageTypeConfigs": []
+      }
+    },
+    {
+      "id": "segment-zu2",
+      "type": "segment",
+      "url": "https://docs.dr.doctor/en/articles/83441",
+      "description": "ZU2 custom segment — referral details",
+      "affects": {
+        "ruleFiles": ["src/validation/rules/zu2.ts"],
+        "referenceDataKeys": ["VALID_REFERRAL_STATUS", "REFERRAL_STATUS_LABELS", "VALID_REFERRAL_PRIORITY", "VALID_REFERRAL_CATEGORY", "VALID_REFERRAL_REASON"],
+        "messageTypeConfigs": []
+      }
+    },
+    {
+      "id": "segment-zu3",
+      "type": "segment",
+      "url": "https://docs.dr.doctor/en/articles/83339-segment-zu3",
+      "description": "ZU3 custom segment — attendance, appointment type and format",
+      "affects": {
+        "ruleFiles": ["src/validation/rules/zu3.ts"],
+        "referenceDataKeys": ["VALID_ATTENDED_DNA", "ATTENDED_DNA_LABELS", "VALID_APPOINTMENT_TYPE", "APPOINTMENT_TYPE_LABELS", "VALID_APPOINTMENT_FORMAT", "APPOINTMENT_FORMAT_LABELS", "ZU33_CONSTRAINT"],
+        "messageTypeConfigs": []
+      }
+    },
+    {
+      "id": "segment-sch",
+      "type": "segment",
+      "url": "https://docs.dr.doctor/en/articles/83343-segment-sch",
+      "description": "SCH segment — schedule information",
+      "affects": {
+        "ruleFiles": ["src/validation/rules/sch.ts"],
+        "referenceDataKeys": ["VALID_SCH25_ATTENDANCE", "SCH25_ATTENDANCE_LABELS", "SCH25_CONSTRAINT"],
+        "messageTypeConfigs": []
+      }
+    },
+    {
+      "id": "segment-zbx",
+      "type": "segment",
+      "url": "https://docs.dr.doctor/en/articles/83344-segment-zbx",
+      "description": "ZBX custom segment — clinic booking information",
+      "affects": {
+        "ruleFiles": ["src/validation/rules/zbx.ts"],
+        "referenceDataKeys": [],
+        "messageTypeConfigs": []
+      }
+    },
+    {
+      "id": "segment-aip",
+      "type": "segment",
+      "url": "https://docs.dr.doctor/en/articles/83350-segment-aip",
+      "description": "AIP segment — appointment information personnel",
+      "affects": {
+        "ruleFiles": ["src/validation/rules/aip.ts"],
+        "referenceDataKeys": [],
+        "messageTypeConfigs": []
+      }
+    },
+    {
+      "id": "adt-a28",
+      "type": "workflow",
+      "url": "https://docs.dr.doctor/en/articles/83321-adt-a28-add-new-patient",
+      "description": "ADT A28 — Add New Patient workflow",
+      "affects": {
+        "ruleFiles": ["src/validation/rules/pid.ts", "src/validation/rules/msh.ts", "src/validation/rules/evn.ts"],
+        "referenceDataKeys": [],
+        "messageTypeConfigs": ["A28"]
+      }
+    },
+    {
+      "id": "adt-a31",
+      "type": "workflow",
+      "url": "https://docs.dr.doctor/en/articles/83326-adt-a31-update-patient",
+      "description": "ADT A31 — Update Patient workflow",
+      "affects": {
+        "ruleFiles": ["src/validation/rules/pid.ts", "src/validation/rules/msh.ts", "src/validation/rules/evn.ts"],
+        "referenceDataKeys": [],
+        "messageTypeConfigs": ["A31"]
+      }
+    },
+    {
+      "id": "adt-a40",
+      "type": "workflow",
+      "url": "https://docs.dr.doctor/en/articles/83327-adt-a40-merge-patient",
+      "description": "ADT A40 — Merge Patient workflow",
+      "affects": {
+        "ruleFiles": ["src/validation/rules/mrg.ts", "src/validation/rules/pid.ts"],
+        "referenceDataKeys": [],
+        "messageTypeConfigs": ["A40"]
+      }
+    },
+    {
+      "id": "adt-a05",
+      "type": "workflow",
+      "url": "https://docs.dr.doctor/en/articles/83328-adt-a05-add-update-appointment",
+      "description": "ADT A05 — Add/Update Appointment workflow",
+      "affects": {
+        "ruleFiles": ["src/validation/rules/pv1.ts", "src/validation/rules/pv2.ts", "src/validation/rules/zu1.ts", "src/validation/rules/zu2.ts", "src/validation/rules/zu3.ts"],
+        "referenceDataKeys": ["VALID_APPOINTMENT_TYPE", "APPOINTMENT_TYPE_LABELS", "VALID_APPOINTMENT_FORMAT", "APPOINTMENT_FORMAT_LABELS", "ZU33_CONSTRAINT"],
+        "messageTypeConfigs": ["A05"]
+      }
+    },
+    {
+      "id": "adt-a38",
+      "type": "workflow",
+      "url": "https://docs.dr.doctor/en/articles/83330-adt-a38-cancel-appointment",
+      "description": "ADT A38 — Cancel Appointment workflow",
+      "affects": {
+        "ruleFiles": ["src/validation/rules/pv1.ts", "src/validation/rules/pv2.ts", "src/validation/rules/zu1.ts", "src/validation/rules/zu2.ts", "src/validation/rules/zu3.ts"],
+        "referenceDataKeys": ["ZU33_CONSTRAINT"],
+        "messageTypeConfigs": ["A38"]
+      }
+    },
+    {
+      "id": "adt-a08",
+      "type": "workflow",
+      "url": "https://docs.dr.doctor/en/articles/83329-adt-a08-appointment-attendance",
+      "description": "ADT A08 — Appointment Attendance workflow",
+      "affects": {
+        "ruleFiles": ["src/validation/rules/zu3.ts", "src/validation/rules/pv1.ts"],
+        "referenceDataKeys": ["VALID_ATTENDED_DNA", "ATTENDED_DNA_LABELS"],
+        "messageTypeConfigs": ["A08"]
+      }
+    },
+    {
+      "id": "siu-s12",
+      "type": "workflow",
+      "url": "https://docs.dr.doctor/en/articles/83342-siu-s12-add-appointment",
+      "description": "SIU S12 — Add Appointment workflow",
+      "affects": {
+        "ruleFiles": ["src/validation/rules/sch.ts", "src/validation/rules/zbx.ts", "src/validation/rules/pv1Siu.ts", "src/validation/rules/zu1.ts", "src/validation/rules/aip.ts"],
+        "referenceDataKeys": ["SCH25_CONSTRAINT", "VALID_SCH25_ATTENDANCE"],
+        "messageTypeConfigs": ["S12"]
+      }
+    },
+    {
+      "id": "siu-s14",
+      "type": "workflow",
+      "url": "https://docs.dr.doctor/en/articles/83352-siu-s14-reschedule-modify-undo-appointment",
+      "description": "SIU S14 — Reschedule/Modify Appointment workflow",
+      "affects": {
+        "ruleFiles": ["src/validation/rules/sch.ts", "src/validation/rules/zbx.ts", "src/validation/rules/pv1Siu.ts"],
+        "referenceDataKeys": ["VALID_SCH25_ATTENDANCE"],
+        "messageTypeConfigs": ["S14"]
+      }
+    },
+    {
+      "id": "siu-s15",
+      "type": "workflow",
+      "url": "https://docs.dr.doctor/en/articles/83353-siu-s15-cancel-appointment",
+      "description": "SIU S15 — Cancel Appointment workflow",
+      "affects": {
+        "ruleFiles": ["src/validation/rules/sch.ts", "src/validation/rules/zbx.ts"],
+        "referenceDataKeys": ["SCH25_CONSTRAINT"],
+        "messageTypeConfigs": ["S15"]
+      }
+    },
+    {
+      "id": "siu-s26",
+      "type": "workflow",
+      "url": "https://docs.dr.doctor/en/articles/83354-siu-s26-dna-appointment",
+      "description": "SIU S26 — DNA Appointment workflow",
+      "affects": {
+        "ruleFiles": ["src/validation/rules/sch.ts", "src/validation/rules/zbx.ts"],
+        "referenceDataKeys": ["SCH25_CONSTRAINT"],
+        "messageTypeConfigs": ["S26"]
+      }
+    },
+    {
+      "id": "siu-z02",
+      "type": "workflow",
+      "url": "https://docs.dr.doctor/en/articles/83355-siu-z02-check-out-appointment",
+      "description": "SIU Z02 — Check-out Appointment workflow",
+      "affects": {
+        "ruleFiles": ["src/validation/rules/sch.ts", "src/validation/rules/zbx.ts"],
+        "referenceDataKeys": ["SCH25_CONSTRAINT"],
+        "messageTypeConfigs": ["Z02"]
+      }
+    }
+  ]
+}
