@@ -1,12 +1,14 @@
 import type { ParsedSegment } from '../../types/hl7'
 import type { ValidationIssue, ValidationContext } from '../../types/validation'
-import { getField, getComponent } from '../../parser/segmentParser'
+import { getField, getComponent, getComponentsForRep, countRepetitions } from '../../parser/segmentParser'
 import { requireComponent, collect, error, warning } from '../helpers'
 import { validateHL7Date } from '../../utils/dateUtils'
 import {
   VALID_SEX_CODES,
   REQUIRED_ADDRESS_TYPE,
   VALID_IDENTIFIER_TYPES,
+  VALID_CONTACT_TYPES,
+  VALID_YN,
 } from '../../constants/referenceData'
 import { formatValidValues } from '../../utils/formatUtils'
 
@@ -47,6 +49,9 @@ export function validatePID(
 
   // PID-11: Address
   issues.push(...validatePID11(segment))
+
+  // PID-13: Phone/email contacts (optional as a whole, but when present each repeat requires .1, .4, .9)
+  issues.push(...validatePID13(segment))
 
   // PID-29: Patient death date (optional)
   const deathDate = getField(segment, 29)
@@ -101,6 +106,40 @@ function validatePID3(segment: ParsedSegment): ValidationIssue[] {
 
   if (!hasMRN) {
     issues.push(error('PID', 'PID-3', 'At least one patient identifier with type "MRN" is required in PID-3', 'PID_3_MRN_REQUIRED'))
+  }
+
+  return issues
+}
+
+function validatePID13(segment: ParsedSegment): ValidationIssue[] {
+  const issues: ValidationIssue[] = []
+  const repCount = countRepetitions(segment, 13)
+
+  if (repCount === 0) return issues // PID-13 is optional as a whole
+
+  for (let repIdx = 0; repIdx < repCount; repIdx++) {
+    const comps = getComponentsForRep(segment, 13, repIdx)
+    const repLabel = repCount > 1 ? `[${repIdx + 1}]` : ''
+
+    const value    = comps[1] ?? ''  // PID-13.1 telephone/email
+    const contType = comps[4] ?? ''  // PID-13.4 HOME | MOBILE | EMAIL
+    const optedOut = comps[9] ?? ''  // PID-13.9 Y | N
+
+    if (!value.trim()) {
+      issues.push(error('PID', `PID-13${repLabel}.1`, `Contact value (PID-13${repLabel}.1) is required but missing`, 'PID_13_1_REQUIRED'))
+    }
+
+    if (!contType.trim()) {
+      issues.push(error('PID', `PID-13${repLabel}.4`, `Contact type (PID-13${repLabel}.4) is required but missing`, 'PID_13_4_REQUIRED'))
+    } else if (!VALID_CONTACT_TYPES.has(contType.trim())) {
+      issues.push(error('PID', `PID-13${repLabel}.4`, `Contact type (PID-13${repLabel}.4) has invalid value "${contType}" — expected "HOME" (landline), "MOBILE" or "EMAIL"`, 'PID_13_4_INVALID'))
+    }
+
+    if (!optedOut.trim()) {
+      issues.push(error('PID', `PID-13${repLabel}.9`, `Opted-out flag (PID-13${repLabel}.9) is required but missing`, 'PID_13_9_REQUIRED'))
+    } else if (!VALID_YN.has(optedOut.trim())) {
+      issues.push(error('PID', `PID-13${repLabel}.9`, `Opted-out flag (PID-13${repLabel}.9) has invalid value "${optedOut}" — expected "Y" (opted out) or "N" (opted in)`, 'PID_13_9_INVALID'))
+    }
   }
 
   return issues

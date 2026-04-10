@@ -81,6 +81,9 @@ export const APPOINTMENT_FORMAT_LABELS: Record<string, string> = {
 // PID-11.7 must be HOME
 export const REQUIRED_ADDRESS_TYPE = 'HOME'
 
+// Valid values for PID-13.4 (Contact Type)
+export const VALID_CONTACT_TYPES = new Set(['HOME', 'MOBILE', 'EMAIL'])
+
 // PV1-2 expected value
 export const EXPECTED_PATIENT_CLASS = 'O'
 
