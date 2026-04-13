@@ -15,6 +15,11 @@ export default function App() {
     setResult(validationResult)
   }
 
+  function handleChange(value: string) {
+    setRawMessage(value)
+    if (!value.trim()) setResult(null)
+  }
+
   return (
     <PageShell>
       <Header />
@@ -28,7 +33,7 @@ export default function App() {
             </h2>
             <MessageInput
               value={rawMessage}
-              onChange={setRawMessage}
+              onChange={handleChange}
               onValidate={handleValidate}
             />
           </div>
