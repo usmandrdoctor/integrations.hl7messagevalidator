@@ -241,6 +241,72 @@
         "referenceDataKeys": ["SCH25_CONSTRAINT"],
         "messageTypeConfigs": ["Z02"]
       }
+    },
+    {
+      "id": "oru-r01",
+      "type": "workflow",
+      "url": "https://docs.dr.doctor/en/articles/83366-oru-workflow",
+      "description": "ORU R01 — PROM assessment results workflow",
+      "affects": {
+        "ruleFiles": ["src/validation/rules/obr.ts", "src/validation/rules/obx.ts", "src/validation/rules/nte.ts", "src/validation/rules/pidOru.ts"],
+        "referenceDataKeys": ["VALID_OBX_VALUE_TYPES", "OBX_VALUE_TYPE_LABELS"],
+        "messageTypeConfigs": ["R01"]
+      }
+    },
+    {
+      "id": "mfn-z03",
+      "type": "workflow",
+      "url": "https://docs.dr.doctor/en/articles/83340-mfn-z03-clinic-code-master-file",
+      "description": "MFN Z03 — Clinic code master file workflow",
+      "affects": {
+        "ruleFiles": ["src/validation/rules/mfi.ts", "src/validation/rules/mfe.ts", "src/validation/rules/loc.ts", "src/validation/rules/ldp.ts", "src/validation/rules/stf.ts"],
+        "referenceDataKeys": ["VALID_MFE_EVENT_CODES", "MFE_EVENT_CODE_LABELS"],
+        "messageTypeConfigs": ["Z03"]
+      }
+    },
+    {
+      "id": "ref-i12",
+      "type": "workflow",
+      "url": "https://docs.dr.doctor/en/articles/83429",
+      "description": "REF I12 — Add referral workflow",
+      "affects": {
+        "ruleFiles": ["src/validation/rules/rf1.ts", "src/validation/rules/pid.ts"],
+        "referenceDataKeys": ["VALID_RF1_STATUS", "RF1_STATUS_LABELS", "VALID_RF1_PRIORITY", "VALID_RF1_CATEGORY", "VALID_RF1_REASON"],
+        "messageTypeConfigs": ["I12"]
+      }
+    },
+    {
+      "id": "ref-i13",
+      "type": "workflow",
+      "url": "https://docs.dr.doctor/en/articles/83430",
+      "description": "REF I13 — Update referral workflow",
+      "affects": {
+        "ruleFiles": ["src/validation/rules/rf1.ts", "src/validation/rules/pid.ts"],
+        "referenceDataKeys": ["VALID_RF1_STATUS", "RF1_STATUS_LABELS", "VALID_RF1_PRIORITY", "VALID_RF1_CATEGORY", "VALID_RF1_REASON"],
+        "messageTypeConfigs": ["I13"]
+      }
+    },
+    {
+      "id": "ref-i14",
+      "type": "workflow",
+      "url": "https://docs.dr.doctor/en/articles/83431",
+      "description": "REF I14 — Cancel referral workflow",
+      "affects": {
+        "ruleFiles": ["src/validation/rules/rf1.ts", "src/validation/rules/pid.ts"],
+        "referenceDataKeys": ["VALID_RF1_STATUS", "RF1_STATUS_LABELS", "VALID_RF1_PRIORITY", "VALID_RF1_CATEGORY", "VALID_RF1_REASON"],
+        "messageTypeConfigs": ["I14"]
+      }
+    },
+    {
+      "id": "segment-rf1",
+      "type": "segment",
+      "url": "https://docs.dr.doctor/en/articles/83432",
+      "description": "RF1 segment — referral information rules",
+      "affects": {
+        "ruleFiles": ["src/validation/rules/rf1.ts"],
+        "referenceDataKeys": ["VALID_RF1_STATUS", "RF1_STATUS_LABELS", "VALID_RF1_PRIORITY", "RF1_PRIORITY_LABELS", "VALID_RF1_CATEGORY", "RF1_CATEGORY_LABELS", "VALID_RF1_REASON", "RF1_REASON_LABELS"],
+        "messageTypeConfigs": []
+      }
     }
   ]
 }
