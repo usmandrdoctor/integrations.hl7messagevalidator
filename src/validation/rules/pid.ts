@@ -81,7 +81,6 @@ function validatePID3(segment: ParsedSegment): ValidationIssue[] {
     if (!rep) continue
 
     const idValue = rep[0]?.[0] ?? ''         // PID-3.1
-    const assigningAuth = rep[3]?.[0] ?? ''   // PID-3.4
     const idTypeCode = rep[4]?.[0] ?? ''      // PID-3.5
     const repLabel = field.length > 1 ? `[${repIdx + 1}]` : ''
 
@@ -95,12 +94,8 @@ function validatePID3(segment: ParsedSegment): ValidationIssue[] {
       issues.push(error('PID', `PID-3${repLabel}.5`, `Identifier type code (PID-3${repLabel}.5) has invalid value "${idTypeCode}" — expected "MRN" or "NHS"`, 'PID_3_5_INVALID'))
     }
 
-    // Assigning authority is only required for MRN repeats (per spec: "For local MRN, use Client Code from MSH-4")
     if (idTypeCode.trim() === 'MRN') {
       hasMRN = true
-      if (!assigningAuth.trim()) {
-        issues.push(error('PID', `PID-3${repLabel}.4`, `Assigning authority (PID-3${repLabel}.4) is required for MRN identifiers but missing`, 'PID_3_4_REQUIRED'))
-      }
     }
   }
 

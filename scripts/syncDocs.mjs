@@ -50,6 +50,7 @@ async function main() {
   console.log(`Loaded ${sources.length} doc sources.\n`)
 
   const changedSources = []
+  const snapshotOnlyUpdates = []
   const errors = []
 
   for (const source of sources) {
@@ -90,9 +91,9 @@ async function main() {
 
     if (proposal.noActionNeeded) {
       console.log(`[${source.id}] No code changes needed (confidence: ${proposal.confidence}). Updating snapshot.`)
-      // Still update the snapshot so we don't re-analyse the same content next run
       const { updateSnapshot } = await import('./diffSnapshots.mjs')
       updateSnapshot(source, freshContent)
+      snapshotOnlyUpdates.push(source.id)
       continue
     }
 
@@ -109,6 +110,19 @@ async function main() {
 
   if (changedSources.length === 0) {
     console.log('No actionable changes found. No PR will be opened.')
+    if (snapshotOnlyUpdates.length > 0) {
+      console.log(`Committing ${snapshotOnlyUpdates.length} snapshot-only update(s) to master: ${snapshotOnlyUpdates.join(', ')}`)
+      const { execSync } = await import('child_process')
+      const exec = cmd => execSync(cmd, { cwd: REPO_ROOT, stdio: 'pipe', encoding: 'utf8' }).trim()
+      exec('git add data/snapshots/')
+      const status = exec('git status --porcelain')
+      if (status) {
+        const date = new Date().toISOString().slice(0, 10)
+        exec(`git commit -m "docs-sync: update snapshots (${date}) [no code changes]"`)
+        exec('git push origin master')
+        console.log('Snapshots committed and pushed to master.')
+      }
+    }
     if (errors.length > 0) process.exit(1)
     process.exit(0)
   }
